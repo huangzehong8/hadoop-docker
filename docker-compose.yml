@@ -1,0 +1,144 @@
+version: "3"
+
+services:
+  namenode:
+    container_name: hadoop_namenode
+    image: hadoop-docker:3.3.5
+    hostname: namenode
+    command: ["/bin/sh", "-c", "mkdir -p /opt/hadoop/data/nn && hdfs namenode"]
+    networks:
+      - hadoop
+    ports:
+      - 9870:9870
+    environment:
+      ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+    env_file:
+      - .env
+
+  secondarynamenode:
+    container_name: hadoop_secondarynamenode
+    image: hadoop-docker:3.3.5
+    hostname: secondarynamenode
+    command: ["hdfs", "secondarynamenode"]
+    networks:
+      - hadoop
+    env_file:
+      - .env
+
+  datanode0:
+    container_name: hadoop_datanode0
+    image: hadoop-docker:3.3.5
+    hostname: datanode0
+    command: ["hdfs", "datanode"]
+    networks:
+      - hadoop
+    env_file:
+      - .env
+
+  datanode1:
+    container_name: hadoop_datanode1
+    image: hadoop-docker:3.3.5
+    hostname: datanode1
+    command: ["hdfs", "datanode"]
+    networks:
+      - hadoop
+    env_file:
+      - .env
+
+  datanode2:
+    container_name: hadoop_datanode2
+    image: hadoop-docker:3.3.5
+    hostname: datanode2
+    command: ["hdfs", "datanode"]
+    networks:
+      - hadoop
+    env_file:
+      - .env
+
+  resourcemanager:
+    container_name: hadoop_resourcemanager
+    image: hadoop-docker:3.3.5
+    hostname: resourcemanager
+    command: ["yarn", "resourcemanager"]
+    networks:
+      - hadoop
+    ports:
+      - 8088:8088
+    environment:
+      - HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+      - HADOOP_MAPRED_ROOT_LOGGER=info,RFA
+    env_file:
+      - .env
+  
+  proxyserver:
+    container_name: hadoop_proxyserver
+    image: hadoop-docker:3.3.5
+    hostname: proxyserver
+    command: ["yarn", "proxyserver"]
+    networks:
+      - hadoop
+    ports:
+      - 8089:8089
+    environment:
+      - HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+      - HADOOP_MAPRED_ROOT_LOGGER=info,RFA
+    env_file:
+      - .env
+
+  historyserver:
+    container_name: hadoop_historyserver
+    image: hadoop-docker:3.3.5
+    hostname: historyserver
+    command: ["mapred", "historyserver"]
+    networks:
+      - hadoop
+    ports:
+      - 19888:19888
+    environment:
+      - HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+      - HADOOP_MAPRED_ROOT_LOGGER=info,RFA
+    env_file:
+      - .env
+  
+  nodemanager0:
+    container_name: hadoop_nodemanager0
+    image: hadoop-docker:3.3.5
+    hostname: nodemanager0
+    command: ["yarn", "nodemanager"]
+    networks:
+      - hadoop
+    environment:
+      - HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+      - HADOOP_MAPRED_ROOT_LOGGER=info,RFA
+    env_file:
+      - .env
+  
+  nodemanager1:
+    container_name: hadoop_nodemanager1
+    image: hadoop-docker:3.3.5
+    hostname: nodemanager1
+    command: ["yarn", "nodemanager"]
+    networks:
+      - hadoop
+    environment:
+      - HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+      - HADOOP_MAPRED_ROOT_LOGGER=info,RFA
+    env_file:
+      - .env
+  
+  nodemanager2:
+    container_name: hadoop_nodemanager2
+    image: hadoop-docker:3.3.5
+    hostname: nodemanager2
+    command: ["yarn", "nodemanager"]
+    networks:
+      - hadoop
+    environment:
+      - HADOOP_JOB_HISTORYSERVER_HEAPSIZE=1000
+      - HADOOP_MAPRED_ROOT_LOGGER=info,RFA
+    env_file:
+      - .env
+
+networks:
+  hadoop:
+    name: hadoop
