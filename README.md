@@ -54,3 +54,7 @@ docker-compose up -d
 ```SHELL
 docker-compose down
 ```
+
+## 3. TODO
+- [ ] 基于构建的Hadoop集群，部署Hive。
+- [ ] 基于构建的Hadoop集群，部署Spark。
